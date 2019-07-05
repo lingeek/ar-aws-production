@@ -2,7 +2,7 @@
   "AWSTemplateFormatVersion": "2010-09-09",
   "Description": "Security groups in environment Production - SG template - Generated from Jenkins",
   "Parameters": {
-    "TAGPROJECT": {
+    "TAGProject": {
       "Description": "Project name",
       "Type": "String",
       "Default": "ProductionEnvironment"
@@ -85,20 +85,12 @@
           "Fn::ImportValue":{"Fn::Sub":"Export::${TAGEnvironment}-VPC" }
         },
         "SecurityGroupIngress":[
-          {"IpProtocol":"tcp","FromPort":"22","ToPort":"22","CidrIp":"10.4.0.0/21","Description": "Access from VPCTooling to SSH"},
-          {"IpProtocol":"tcp","FromPort":"22","ToPort":"22","CidrIp":"10.4.24.0/21","Description": "Access from VPCTooling to SSH"},
-          {"IpProtocol":"tcp","FromPort":"8140","ToPort":"8140","CidrIp":"10.4.0.5/32","Description": "Access from VPCTooling puppet server to EC2 puppet agent"},
-          {"IpProtocol":"tcp","FromPort":"5666","ToPort":"5666","CidrIp":"10.4.0.0/21", "Description": "Access from VPCTooling nagios to EC2 nrpe agent"},
-          {"IpProtocol":"tcp","FromPort":"8080","ToPort":"8080","CidrIp":"0.0.0.0/0","Description": "Access from ELB to EC2 instance on port 8080"},
-          { "IpProtocol" : "icmp", "FromPort" : "8", "ToPort" : "-1", "CidrIp" : "10.4.0.0/16","Description": "Enable ICMP ping" }
-
-
-
+            { "IpProtocol" : "icmp", "FromPort" : "8", "ToPort" : "-1", "CidrIp" : "10.4.0.0/16","Description": "Enable ICMP ping" }
         ],
         "Tags":[
           {
             "Key":"Name",
-            "Value": {"Fn::Join": ["",["SG-EC2-Infra-",{"Ref": "TAGPROJECT"}]]}
+            "Value": {"Fn::Join": ["",["SG-EC2-Infra-",{"Ref": "TAGProject"}]]}
           },
 
           {
@@ -141,13 +133,11 @@
     "ComponentSGforEC2":{
       "Type":"AWS::EC2::SecurityGroup",
       "Metadata" : {
-        "Comment1" : "This is the security group for EC2 Test Web App server",
-        "Comment2" : "The security group is linked with template Test_Server.template",
-        "Comment3" : "Allow HTTP and HTTPS from ELB"
+        "Comment1" : "This is the security group which allows acces from VPC Infra to all VPC"
 
       },
       "Properties":{
-        "GroupDescription":"Allow http to client host",
+        "GroupDescription":"Allow SSH to client host",
         "VpcId":{
           "Fn::ImportValue":{
             "Fn::Sub":"Export::${TAGEnvironment}-VPC"
@@ -156,7 +146,7 @@
         "Tags":[
           {
             "Key":"Name",
-            "Value": {"Fn::Join": ["",["SG-EC2-SSH",{"Ref": "TAGPROJECT"}]]}
+            "Value": {"Fn::Join": ["",["SG-EC2-SSH",{"Ref": "TAGProject"}]]}
           },
 
           {
@@ -193,8 +183,8 @@
           }
         ],
         "SecurityGroupIngress":[
-          {"IpProtocol":"tcp","FromPort":"80","ToPort":"80","CidrIp":"0.0.0.0/0","Description": "Access ELB from internet."},
-          {"IpProtocol":"tcp","FromPort":"443","ToPort":"443","CidrIp":"0.0.0.0/0","Description": "Access ELB from internet."}
+          {"IpProtocol":"tcp","FromPort":"22","ToPort":"22","CidrIp":"172.4.0.0/21","Description": "Access from VPCInfrastructure to SSH."}
+
 
         ]
       }

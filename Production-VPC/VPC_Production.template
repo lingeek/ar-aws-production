@@ -50,32 +50,32 @@
     "TAGPublicSubnetA": {
       "Description": "External network segment A",
       "Type": "String",
-      "Default": "QA-PublicSubnet-A"
+      "Default": "Prod-PublicSubnet-A"
     },
     "TAGPublicSubnetB": {
       "Description": "External network segment B",
       "Type": "String",
-      "Default": "QA-PublicSubnet-B"
+      "Default": "Prod-PublicSubnet-B"
     },
     "TAGPublicSubnetC": {
       "Description": "External network segment C",
       "Type": "String",
-      "Default": "QA-PublicSubnet-C"
+      "Default": "Prod-PublicSubnet-C"
     },
     "TAGPrivateSubnetA": {
       "Description": "Internal network segment A",
       "Type": "String",
-      "Default": "QA-PrivateSubnet-A"
+      "Default": "Prod-PrivateSubnet-A"
     },
     "TAGPrivateSubnetB": {
       "Description": "Internal network segment B",
       "Type": "String",
-      "Default": "QA-PrivateSubnet-B"
+      "Default": "Prod-PrivateSubnet-B"
     },
     "TAGPrivateSubnetC": {
       "Description": "Internal network segment C",
       "Type": "String",
-      "Default": "QA-PrivateSubnet-C"
+      "Default": "Prod-PrivateSubnet-C"
     },
     "TAGZoneA": {
       "Description": "US West (Oregon)-2a",
