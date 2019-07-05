@@ -200,7 +200,7 @@
         ]
       },
 
-      "Export": { "Name": {"Fn::Sub": "Export::${TAGPROJECT}-SG-EC2-Infra"}}
+      "Export": { "Name": {"Fn::Sub": "Export::${TAGProject}-SG-EC2-Infra"}}
 
     },
     "ComponentSGInforELB":{
@@ -212,7 +212,7 @@
         ]
       },
 
-      "Export": { "Name": {"Fn::Sub": "Export::${TAGPROJECT}-SG-SSH-EC2"}}
+      "Export": { "Name": {"Fn::Sub": "Export::${TAGProject}-SG-SSH-EC2"}}
 
     }
   }
