@@ -2,36 +2,21 @@
   "AWSTemplateFormatVersion": "2010-09-09",
   "Description": "Security groups in environment Production - SG template - Generated from Jenkins",
   "Parameters": {
-    "TAGProject": {
-      "Description": "Project name",
-      "Type": "String",
-      "Default": "ProductionEnvironment"
-    },
-    "TAGClass": {
-      "Description": "Accounting class",
-      "Type": "String",
-      "Default": "ARaul"
-    },
-    "TAGClassProject": {
-      "Description": "Accounting class for project",
-      "Type": "String",
-      "Default": "AR-Production"
-    },
-    "TAGCostCenter": {
-      "Description": "Cost center for project",
-      "Type": "String",
-      "Default": "12000"
-    },
+
+
     "TAGEnvironment": {
-      "Description": "This is the environment.",
+      "Description": "Technical TAGS - Environment",
       "Type": "String",
       "AllowedValues": [
-        "Test",
-        "QA",
-        "Production",
-        "ProdInfra"
-      ]
+        "test",
+        "staging",
+        "development",
+        "production",
+        "logging",
+        "recovery",
+        "tooling"
 
+      ]
     },
     "TAGTier1": {
       "Description": "Tier 1, exposed to internet",
@@ -62,10 +47,121 @@
       "Description": "Security group ID Infrastructure",
       "Type": "String",
       "AllowedValues": [
-        "PRD00-01-Puppet",
-        "PRD00-02-Grafana",
-        "PRD00-03-Monitoring"
+        "pr00-01-puppet",
+        "pr00-02-grafana",
+        "pr00-03-monitoring"
       ]
+
+
+    },
+    "TAGtechcontactname": {
+      "Description": "Technical TAGS - Technical contact name",
+      "Type": "String",
+      "Default": "Alexandru Raul"
+
+    },
+    "TAGtechcontactemail": {
+      "Description": "Technical TAGS - Technical contact email",
+      "Type": "String",
+      "Default": "alexandru.raul@gmail.com"
+
+    },
+    "TAGtechcontactphone": {
+      "Description": "Technical TAGS - Technical contact phone",
+      "Type": "String",
+      "Default": "+40111111"
+
+    },
+    "TAGtechresourcetype": {
+      "Description": "Technical TAGS - Resource type",
+      "Type": "String",
+      "Default": "subnet"
+
+    },
+    "TAGbillingBU": {
+      "Description": "Business TAG - Business unit",
+      "Type": "String",
+      "AllowedValues": [
+        "Itcommunity Platform"
+
+      ]
+
+
+    },
+    "TAGbillingregion": {
+      "Description": "Business TAG - Billing region",
+      "Type": "String",
+      "AllowedValues": [
+        "emea",
+        "us",
+        "apac"
+
+      ]
+
+
+    },
+    "TAGbillingowner": {
+      "Description": "Business TAG - Billing owner",
+      "Type": "String",
+      "Default": "Alexandru Raul"
+
+
+    },
+    "TAGbillincostcenter": {
+      "Description": "Business TAG - Billing cost center",
+      "Type": "String",
+      "Default": "123"
+
+
+    },
+    "TAGbusinesscontactname": {
+      "Description": "Business TAGS - Business contact name",
+      "Type": "String",
+      "Default": "Alexandru Raul"
+
+    },
+    "TAGbusinesscontactemail": {
+      "Description": "Business TAGS - Business contact email",
+      "Type": "String",
+      "Default": "alexandru.raul@gmail.com"
+
+    },
+    "TAGbusinesscontactphone": {
+      "Description": "Business TAGS - Business contact phone",
+      "Type": "String",
+      "Default": "+40111111"
+
+    },
+    "TAGseccomplianceresidency": {
+      "Description": "Security TAGS - Data residency",
+      "Type": "String",
+      "AllowedValues": [
+        "germany",
+        "ireland",
+        "us",
+        "canada"
+
+
+      ]
+    },
+    "TAGLevel1" : {
+      "Description" : "Access Level Tier 1",
+      "Type" : "Number",
+      "Default" : "1"
+
+
+    },
+    "TAGLevel2" : {
+      "Description" : "Access Level Tier 2",
+      "Type" : "Number",
+      "Default" : "2"
+
+
+    },
+    "TAGLevel3" : {
+      "Description" : "Access Level Tier 3",
+      "Type" : "Number",
+      "Default" : "3"
 
 
     }
@@ -89,41 +185,90 @@
         ],
         "Tags":[
           {
-            "Key":"Name",
-            "Value": {"Fn::Join": ["",["SG-EC2-Infra-",{"Ref": "TAGProject"}]]}
-          },
-
-          {
-            "Key":"Environment",
-            "Value":{
-              "Ref":"TAGEnvironment"
-            }
+            "Key":"itcommunity:name",
+            "Value": {"Fn::Join": ["",["sg-ec2-infra-",{"Ref": "TAGEnvironment"}]]}
           },
           {
-            "Key":"Tier",
-            "Value": {"Ref": "TAGTier1"}
-          },
-          {
-            "Key": "Budget",
-            "Value": {"Ref": "TAGClass"}
-          },
-          {
-            "Key": "BudgetProject",
+            "Key": "itcommunity:environment",
             "Value": {
-              "Ref": "TAGClassProject"
+              "Ref": "TAGEnvironment"
             }
           },
           {
-            "Key": "CostCenter",
+            "Key": "itcommunity:technical-contact-name",
             "Value": {
-              "Ref": "TAGCostCenter"
+              "Ref": "TAGtechcontactname"
             }
           },
           {
-            "Key": "SecurityGroupID",
+            "Key": "itcommunity:technical-contact-email",
+            "Value": {
+              "Ref": "TAGtechcontactemail"
+            }
+          },
+          {
+            "Key": "itcommunity:technical-contact-phone",
+            "Value": {
+              "Ref": "TAGtechcontactphone"
+            }
+          },
+          {
+            "Key": "itcommunity:billing:costcenter",
+            "Value": {
+              "Ref": "TAGbillincostcenter"
+            }
+          },
+          {
+            "Key": "itcommunity:billing:bu",
+            "Value": {
+              "Ref": "TAGbillingBU"
+            }
+          },
+          {
+            "Key": "itcommunity:billing:region",
+            "Value": {
+              "Ref": "TAGbillingregion"
+            }
+          },
+          {
+            "Key": "itcommunity:billing:owner",
+            "Value": {
+              "Ref": "TAGbillingowner"
+            }
+          },
+          {
+            "Key": "itcommunity:billing:costcenter",
+            "Value": {
+              "Ref": "TAGbillincostcenter"
+            }
+          },
+          {
+            "Key": "itcommunity:business-contact-name",
+            "Value": {
+              "Ref": "TAGbusinesscontactname"
+            }
+          },
+          {
+            "Key": "itcommunity:business-contact-email",
+            "Value": {
+              "Ref": "TAGbusinesscontactemail"
+            }
+          },
+          {
+            "Key": "itcommunity:business-contact-phone",
+            "Value": {
+              "Ref": "TAGbusinesscontactphone"
+            }
+          },
+          {
+            "Key": "itcommunity:sg:id",
             "Value": {
               "Ref": "SGIDINFRA"
             }
+          },
+          {
+            "Key": "itcommunity:tier",
+            "Value": {"Ref": "TAGLevel1"}
           }
 
         ]
@@ -145,41 +290,90 @@
         },
         "Tags":[
           {
-            "Key":"Name",
-            "Value": {"Fn::Join": ["",["SG-EC2-SSH",{"Ref": "TAGProject"}]]}
-          },
-
-          {
-            "Key":"Environment",
-            "Value":{
-              "Ref":"TAGEnvironment"
-            }
+            "Key":"itcommunity:name",
+            "Value": {"Fn::Join": ["",["sg-ec2-ssh",{"Ref": "TAGEnvironment"}]]}
           },
           {
-            "Key":"Tier",
-            "Value": {"Ref": "TAGTier1"}
-          },
-          {
-            "Key": "Budget",
-            "Value": {"Ref": "TAGClass"}
-          },
-          {
-            "Key": "BudgetProject",
+            "Key": "itcommunity:environment",
             "Value": {
-              "Ref": "TAGClassProject"
+              "Ref": "TAGEnvironment"
             }
           },
           {
-            "Key": "CostCenter",
+            "Key": "itcommunity:technical-contact-name",
             "Value": {
-              "Ref": "TAGCostCenter"
+              "Ref": "TAGtechcontactname"
             }
           },
           {
-            "Key": "SecurityGroupID",
+            "Key": "itcommunity:technical-contact-email",
+            "Value": {
+              "Ref": "TAGtechcontactemail"
+            }
+          },
+          {
+            "Key": "itcommunity:technical-contact-phone",
+            "Value": {
+              "Ref": "TAGtechcontactphone"
+            }
+          },
+          {
+            "Key": "itcommunity:billing:costcenter",
+            "Value": {
+              "Ref": "TAGbillincostcenter"
+            }
+          },
+          {
+            "Key": "itcommunity:billing:bu",
+            "Value": {
+              "Ref": "TAGbillingBU"
+            }
+          },
+          {
+            "Key": "itcommunity:billing:region",
+            "Value": {
+              "Ref": "TAGbillingregion"
+            }
+          },
+          {
+            "Key": "itcommunity:billing:owner",
+            "Value": {
+              "Ref": "TAGbillingowner"
+            }
+          },
+          {
+            "Key": "itcommunity:billing:costcenter",
+            "Value": {
+              "Ref": "TAGbillincostcenter"
+            }
+          },
+          {
+            "Key": "itcommunity:business-contact-name",
+            "Value": {
+              "Ref": "TAGbusinesscontactname"
+            }
+          },
+          {
+            "Key": "itcommunity:business-contact-email",
+            "Value": {
+              "Ref": "TAGbusinesscontactemail"
+            }
+          },
+          {
+            "Key": "itcommunity:business-contact-phone",
+            "Value": {
+              "Ref": "TAGbusinesscontactphone"
+            }
+          },
+          {
+            "Key": "itcommunity:sg:id",
             "Value": {
               "Ref": "SGIDSSH"
             }
+          },
+          {
+            "Key": "itcommunity:tier",
+            "Value": {"Ref": "TAGLevel1"}
           }
         ],
         "SecurityGroupIngress":[
@@ -200,7 +394,7 @@
         ]
       },
 
-      "Export": { "Name": {"Fn::Sub": "Export::${TAGProject}-SG-EC2-Infra"}}
+      "Export": { "Name": {"Fn::Sub": "Export::${TAGEnvironment}-SG-EC2-Infra"}}
 
     },
     "ComponentSGInforELB":{
@@ -212,7 +406,7 @@
         ]
       },
 
-      "Export": { "Name": {"Fn::Sub": "Export::${TAGProject}-SG-SSH-EC2"}}
+      "Export": { "Name": {"Fn::Sub": "Export::${TAgEnvironment}-SG-SSH-EC2"}}
 
     }
   }
