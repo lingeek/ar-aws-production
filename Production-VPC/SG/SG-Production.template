@@ -37,10 +37,10 @@
       "Description": "Security group ID SSH",
       "Type": "String",
       "AllowedValues": [
-        "PRD00-01-SSH"
+        "prd00-01-ssh"
 
       ],
-      "Default": "PRD00-01-SSH"
+      "Default": "prd00-01-ssh"
 
     },
     "SGIDINFRA": {
