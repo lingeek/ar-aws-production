@@ -2,80 +2,58 @@
   "AWSTemplateFormatVersion": "2010-09-09",
   "Description": "VPC Production environment - Generated from Jenkins",
   "Parameters" : {
-    "TAGProject": {
-      "Description": "Project name",
-      "Type": "String",
-      "Default": "ProductionEnvironment"
-    },
-    "TAGInternetGW": {
-      "Description": "TAG Internet Gateway Name",
-      "Type": "String",
-      "Default": "Prod-IGW"
-    },
-    "TAGPublicRouteTable": {
-      "Description": "TAG Public Router Table Name",
-      "Type": "String",
-      "Default": "Prod-Public-Route-Table"
-    },
-    "TAGPrivateRouteTable": {
-      "Description": "TAG Private Router Table Name",
-      "Type": "String",
-      "Default": "Prod-Private-Route-Table"
-    },
-    "TAGPublicNetworkACL": {
-      "Description": "TAG Public Network Access List Name",
-      "Type": "String",
-      "Default": "Prod-Public-NACL"
-    },
-    "TAGNATGateway": {
-      "Description": "TAG NAT Gateway Name",
-      "Type": "String",
-      "Default": "Prod-NAT-GW"
-    },
+
+
+
+
     "TAGExternal": {
       "Description": "Tier 1 network, External network.",
       "Type": "String",
       "Default": "Public"
     },
-    "TAGVPCName": {
-      "Description": "VPC name",
-      "Type": "String",
-      "Default": "Prod-VPC"
-    },
     "TAGEnvironment": {
-      "Description": "Define environment",
+      "Description": "Technical TAGS - Environment",
       "Type": "String",
-      "Default": "Production"
+      "AllowedValues": [
+        "test",
+        "staging",
+        "development",
+        "production",
+        "logging",
+        "recovery",
+        "tooling"
+
+      ]
     },
     "TAGPublicSubnetA": {
       "Description": "External network segment A",
       "Type": "String",
-      "Default": "Prod-PublicSubnet-A"
+      "Default": "public-A"
     },
     "TAGPublicSubnetB": {
       "Description": "External network segment B",
       "Type": "String",
-      "Default": "Prod-PublicSubnet-B"
+      "Default": "public-B"
     },
     "TAGPublicSubnetC": {
       "Description": "External network segment C",
       "Type": "String",
-      "Default": "Prod-PublicSubnet-C"
+      "Default": "public-C"
     },
     "TAGPrivateSubnetA": {
       "Description": "Internal network segment A",
       "Type": "String",
-      "Default": "Prod-PrivateSubnet-A"
+      "Default": "private-A"
     },
     "TAGPrivateSubnetB": {
       "Description": "Internal network segment B",
       "Type": "String",
-      "Default": "Prod-PrivateSubnet-B"
+      "Default": "private-B"
     },
     "TAGPrivateSubnetC": {
       "Description": "Internal network segment C",
       "Type": "String",
-      "Default": "Prod-PrivateSubnet-C"
+      "Default": "private-C"
     },
     "TAGZoneA": {
       "Description": "US West (Oregon)-2a",
@@ -118,21 +96,96 @@
 
 
     },
-    "TAGClass" : {
-      "Description" : "Accounting class",
-      "Type" : "String",
-      "Default" : "AR-Production"
+    "TAGtechcontactname": {
+      "Description": "Technical TAGS - Technical contact name",
+      "Type": "String",
+      "Default": "Alexandru Raul"
+
+    },
+    "TAGtechcontactemail": {
+      "Description": "Technical TAGS - Technical contact email",
+      "Type": "String",
+      "Default": "alexandru.raul@gmail.com"
+
+    },
+    "TAGtechcontactphone": {
+      "Description": "Technical TAGS - Technical contact phone",
+      "Type": "String",
+      "Default": "+40111111"
+
+    },
+    "TAGtechresourcetype": {
+      "Description": "Technical TAGS - Resource type",
+      "Type": "String",
+      "Default": "subnet"
+
+    },
+    "TAGbillingBU": {
+      "Description": "Business TAG - Business unit",
+      "Type": "String",
+      "AllowedValues": [
+        "Itcommunity Platform"
+
+      ]
 
 
     },
-    "TAGClassProject" : {
-      "Description" : "Accounting class for project",
-      "Type" : "String",
-      "Default" : "AR-Production"
+    "TAGbillingregion": {
+      "Description": "Business TAG - Billing region",
+      "Type": "String",
+      "AllowedValues": [
+        "emea",
+        "us",
+        "apac"
+
+      ]
 
 
-    }
+    },
+    "TAGbillingowner": {
+      "Description": "Business TAG - Billing owner",
+      "Type": "String",
+      "Default": "Alexandru Raul"
 
+
+    },
+    "TAGbillincostcenter": {
+      "Description": "Business TAG - Billing cost center",
+      "Type": "String",
+      "Default": "123"
+
+
+    },
+    "TAGbusinesscontactname": {
+      "Description": "Business TAGS - Business contact name",
+      "Type": "String",
+      "Default": "Alexandru Raul"
+
+    },
+    "TAGbusinesscontactemail": {
+      "Description": "Business TAGS - Business contact email",
+      "Type": "String",
+      "Default": "alexandru.raul@gmail.com"
+
+    },
+    "TAGbusinesscontactphone": {
+      "Description": "Business TAGS - Business contact phone",
+      "Type": "String",
+      "Default": "+40111111"
+
+    },
+    "TAGseccomplianceresidency": {
+      "Description": "Security TAGS - Data residency",
+      "Type": "String",
+      "AllowedValues": [
+        "germany",
+        "ireland",
+        "us",
+        "canada"
+
+
+      ]
+    },
   },
   "Mappings": {
     "SubnetConfig": {
@@ -177,19 +230,88 @@
         },
         "Tags": [
           {
-            "Key": "StackName",
+            "Key": "itcommunity:name",
+            "Value": {"Fn::Join": ["",["vpc-",{"Ref": "TAGEnvironment"}]]}
+          },
+          {
+            "Key": "itcommunity:environment",
             "Value": {
-              "Ref": "AWS::StackName"
+              "Ref": "TAGEnvironment"
             }
           },
           {
-            "Key": "Name",
-            "Value": {"Ref": "TAGVPCName"}
+            "Key": "itcommunity:technical-contact-name",
+            "Value": {
+              "Ref": "TAGtechcontactname"
+            }
           },
           {
-            "Key": "Environment",
-            "Value": {"Ref": "TAGEnvironment"}
+            "Key": "itcommunity:technical-contact-email",
+            "Value": {
+              "Ref": "TAGtechcontactemail"
+            }
+          },
+          {
+            "Key": "itcommunity:technical-contact-phone",
+            "Value": {
+              "Ref": "TAGtechcontactphone"
+            }
+          },
+          {
+            "Key": "itcommunity:billing:costcenter",
+            "Value": {
+              "Ref": "TAGbillincostcenter"
+            }
+          },
+          {
+            "Key": "itcommunity:billing:bu",
+            "Value": {
+              "Ref": "TAGbillingBU"
+            }
+          },
+          {
+            "Key": "itcommunity:billing:region",
+            "Value": {
+              "Ref": "TAGbillingregion"
+            }
+          },
+          {
+            "Key": "itcommunity:billing:owner",
+            "Value": {
+              "Ref": "TAGbillingowner"
+            }
+          },
+          {
+            "Key": "itcommunity:billing:costcenter",
+            "Value": {
+              "Ref": "TAGbillincostcenter"
+            }
+          },
+          {
+            "Key": "itcommunity:business-contact-name",
+            "Value": {
+              "Ref": "TAGbusinesscontactname"
+            }
+          },
+          {
+            "Key": "itcommunity:business-contact-email",
+            "Value": {
+              "Ref": "TAGbusinesscontactemail"
+            }
+          },
+          {
+            "Key": "itcommunity:business-contact-phone",
+            "Value": {
+              "Ref": "TAGbusinesscontactphone"
+            }
+          },
+          {
+            "Key": "itcommunity:compliance:dataresidency",
+            "Value": {
+              "Ref": "TAGseccomplianceresidency"
+            }
           }
+
         ]
       }
     },
@@ -210,35 +332,98 @@
         },
         "MapPublicIpOnLaunch": "true",
         "Tags": [
+
           {
-            "Key": "StackName",
+            "Key": "itcommunity:name",
+            "Value": {"Fn::Join": ["",["subnet-",{"Ref": "TAGPublicSubnetA"}]]}
+          },
+          {
+            "Key": "itcommunity:environment",
             "Value": {
-              "Ref": "AWS::StackName"
+              "Ref": "TAGEnvironment"
             }
           },
           {
-            "Key": "Network",
-            "Value": {"Ref": "TAGPublicSubnetA"}
+            "Key": "itcommunity:technical-contact-name",
+            "Value": {
+              "Ref": "TAGtechcontactname"
+            }
           },
           {
-            "Key": "Name",
-            "Value": {"Ref": "TAGPublicSubnetA"}
+            "Key": "itcommunity:technical-contact-email",
+            "Value": {
+              "Ref": "TAGtechcontactemail"
+            }
           },
           {
-            "Key": "Environment",
-            "Value": {"Ref": "TAGEnvironment"}
+            "Key": "itcommunity:technical-contact-phone",
+            "Value": {
+              "Ref": "TAGtechcontactphone"
+            }
           },
           {
-            "Key": "AZ",
+            "Key": "itcommunity:billing:costcenter",
+            "Value": {
+              "Ref": "TAGbillincostcenter"
+            }
+          },
+          {
+            "Key": "itcommunity:billing:bu",
+            "Value": {
+              "Ref": "TAGbillingBU"
+            }
+          },
+          {
+            "Key": "itcommunity:billing:region",
+            "Value": {
+              "Ref": "TAGbillingregion"
+            }
+          },
+          {
+            "Key": "itcommunity:billing:owner",
+            "Value": {
+              "Ref": "TAGbillingowner"
+            }
+          },
+          {
+            "Key": "itcommunity:billing:costcenter",
+            "Value": {
+              "Ref": "TAGbillincostcenter"
+            }
+          },
+          {
+            "Key": "itcommunity:business-contact-name",
+            "Value": {
+              "Ref": "TAGbusinesscontactname"
+            }
+          },
+          {
+            "Key": "itcommunity:business-contact-email",
+            "Value": {
+              "Ref": "TAGbusinesscontactemail"
+            }
+          },
+          {
+            "Key": "itcommunity:business-contact-phone",
+            "Value": {
+              "Ref": "TAGbusinesscontactphone"
+            }
+          },
+          {
+            "Key": "itcommunity:zone",
             "Value": {"Ref": "TAGZoneA"}
           },
           {
-            "Key": "Region",
+            "Key": "itcommunity:region",
             "Value": {"Ref": "TAGRegion"}
           },
           {
-            "Key": "Tier",
-            "Value": "TAGLevel1"
+            "Key": "itcommunity:tier",
+            "Value": {"Ref": "TAGLevel1"}
+          },
+          {
+            "Key": "itcommunity:resource:type",
+            "Value": {"Ref": "TAGtechresourcetype"}
           }
         ]
       }
@@ -261,34 +446,96 @@
         "MapPublicIpOnLaunch": "true",
         "Tags": [
           {
-            "Key": "StackName",
+            "Key": "itcommunity:name",
+            "Value": {"Fn::Join": ["",["subnet-",{"Ref": "TAGPublicSubnetB"}]]}
+          },
+          {
+            "Key": "itcommunity:environment",
             "Value": {
-              "Ref": "AWS::StackName"
+              "Ref": "TAGEnvironment"
             }
           },
           {
-            "Key": "Network",
-            "Value": {"Ref": "TAGPublicSubnetB"}
+            "Key": "itcommunity:technical-contact-name",
+            "Value": {
+              "Ref": "TAGtechcontactname"
+            }
           },
           {
-            "Key": "Name",
-            "Value": {"Ref": "TAGPublicSubnetB"}
+            "Key": "itcommunity:technical-contact-email",
+            "Value": {
+              "Ref": "TAGtechcontactemail"
+            }
           },
           {
-            "Key": "Environment",
-            "Value": {"Ref": "TAGEnvironment"}
+            "Key": "itcommunity:technical-contact-phone",
+            "Value": {
+              "Ref": "TAGtechcontactphone"
+            }
           },
           {
-            "Key": "AZ",
-            "Value": {"Ref": "TAGZoneB"}
+            "Key": "itcommunity:billing:costcenter",
+            "Value": {
+              "Ref": "TAGbillincostcenter"
+            }
           },
           {
-            "Key": "Region",
+            "Key": "itcommunity:billing:bu",
+            "Value": {
+              "Ref": "TAGbillingBU"
+            }
+          },
+          {
+            "Key": "itcommunity:billing:region",
+            "Value": {
+              "Ref": "TAGbillingregion"
+            }
+          },
+          {
+            "Key": "itcommunity:billing:owner",
+            "Value": {
+              "Ref": "TAGbillingowner"
+            }
+          },
+          {
+            "Key": "itcommunity:billing:costcenter",
+            "Value": {
+              "Ref": "TAGbillincostcenter"
+            }
+          },
+          {
+            "Key": "itcommunity:business-contact-name",
+            "Value": {
+              "Ref": "TAGbusinesscontactname"
+            }
+          },
+          {
+            "Key": "itcommunity:business-contact-email",
+            "Value": {
+              "Ref": "TAGbusinesscontactemail"
+            }
+          },
+          {
+            "Key": "itcommunity:business-contact-phone",
+            "Value": {
+              "Ref": "TAGbusinesscontactphone"
+            }
+          },
+          {
+            "Key": "itcommunity:zone",
+            "Value": {"Ref": "TAGZoneA"}
+          },
+          {
+            "Key": "itcommunity:region",
             "Value": {"Ref": "TAGRegion"}
           },
           {
-            "Key": "Tier",
-            "Value": "TAGLevel1"
+            "Key": "itcommunity:tier",
+            "Value": {"Ref": "TAGLevel1"}
+          },
+          {
+            "Key": "itcommunity:resource:type",
+            "Value": {"Ref": "TAGtechresourcetype"}
           }
         ]
       }
@@ -311,34 +558,96 @@
         "MapPublicIpOnLaunch": "true",
         "Tags": [
           {
-            "Key": "StackName",
+            "Key": "itcommunity:name",
+            "Value": {"Fn::Join": ["",["subnet-",{"Ref": "TAGPublicSubnetC"}]]}
+          },
+          {
+            "Key": "itcommunity:environment",
             "Value": {
-              "Ref": "AWS::StackName"
+              "Ref": "TAGEnvironment"
             }
           },
           {
-            "Key": "Network",
-            "Value": {"Ref": "TAGPublicSubnetC"}
+            "Key": "itcommunity:technical-contact-name",
+            "Value": {
+              "Ref": "TAGtechcontactname"
+            }
           },
           {
-            "Key": "Name",
-            "Value": {"Ref": "TAGPublicSubnetC"}
+            "Key": "itcommunity:technical-contact-email",
+            "Value": {
+              "Ref": "TAGtechcontactemail"
+            }
           },
           {
-            "Key": "Environment",
-            "Value": {"Ref": "TAGEnvironment"}
+            "Key": "itcommunity:technical-contact-phone",
+            "Value": {
+              "Ref": "TAGtechcontactphone"
+            }
           },
           {
-            "Key": "AZ",
-            "Value": {"Ref": "TAGZoneC"}
+            "Key": "itcommunity:billing:costcenter",
+            "Value": {
+              "Ref": "TAGbillincostcenter"
+            }
           },
           {
-            "Key": "Region",
+            "Key": "itcommunity:billing:bu",
+            "Value": {
+              "Ref": "TAGbillingBU"
+            }
+          },
+          {
+            "Key": "itcommunity:billing:region",
+            "Value": {
+              "Ref": "TAGbillingregion"
+            }
+          },
+          {
+            "Key": "itcommunity:billing:owner",
+            "Value": {
+              "Ref": "TAGbillingowner"
+            }
+          },
+          {
+            "Key": "itcommunity:billing:costcenter",
+            "Value": {
+              "Ref": "TAGbillincostcenter"
+            }
+          },
+          {
+            "Key": "itcommunity:business-contact-name",
+            "Value": {
+              "Ref": "TAGbusinesscontactname"
+            }
+          },
+          {
+            "Key": "itcommunity:business-contact-email",
+            "Value": {
+              "Ref": "TAGbusinesscontactemail"
+            }
+          },
+          {
+            "Key": "itcommunity:business-contact-phone",
+            "Value": {
+              "Ref": "TAGbusinesscontactphone"
+            }
+          },
+          {
+            "Key": "itcommunity:zone",
+            "Value": {"Ref": "TAGZoneA"}
+          },
+          {
+            "Key": "itcommunity:region",
             "Value": {"Ref": "TAGRegion"}
           },
           {
-            "Key": "Tier",
-            "Value": "TAGLevel1"
+            "Key": "itcommunity:tier",
+            "Value": {"Ref": "TAGLevel1"}
+          },
+          {
+            "Key": "itcommunity:resource:type",
+            "Value": {"Ref": "TAGtechresourcetype"}
           }
         ]
       }
@@ -359,34 +668,96 @@
         },
         "Tags": [
           {
-            "Key": "StackName",
+            "Key": "itcommunity:name",
+            "Value": {"Fn::Join": ["",["subnet-",{"Ref": "TAGPrivateSubnetA"}]]}
+          },
+          {
+            "Key": "itcommunity:environment",
             "Value": {
-              "Ref": "AWS::StackName"
+              "Ref": "TAGEnvironment"
             }
           },
           {
-            "Key": "Network",
-            "Value": {"Ref": "TAGPrivateSubnetA"}
+            "Key": "itcommunity:technical-contact-name",
+            "Value": {
+              "Ref": "TAGtechcontactname"
+            }
           },
           {
-            "Key": "Name",
-            "Value": {"Ref": "TAGPrivateSubnetA"}
+            "Key": "itcommunity:technical-contact-email",
+            "Value": {
+              "Ref": "TAGtechcontactemail"
+            }
           },
           {
-            "Key": "Environment",
-            "Value": {"Ref": "TAGEnvironment"}
+            "Key": "itcommunity:technical-contact-phone",
+            "Value": {
+              "Ref": "TAGtechcontactphone"
+            }
           },
           {
-            "Key": "AZ",
+            "Key": "itcommunity:billing:costcenter",
+            "Value": {
+              "Ref": "TAGbillincostcenter"
+            }
+          },
+          {
+            "Key": "itcommunity:billing:bu",
+            "Value": {
+              "Ref": "TAGbillingBU"
+            }
+          },
+          {
+            "Key": "itcommunity:billing:region",
+            "Value": {
+              "Ref": "TAGbillingregion"
+            }
+          },
+          {
+            "Key": "itcommunity:billing:owner",
+            "Value": {
+              "Ref": "TAGbillingowner"
+            }
+          },
+          {
+            "Key": "itcommunity:billing:costcenter",
+            "Value": {
+              "Ref": "TAGbillincostcenter"
+            }
+          },
+          {
+            "Key": "itcommunity:business-contact-name",
+            "Value": {
+              "Ref": "TAGbusinesscontactname"
+            }
+          },
+          {
+            "Key": "itcommunity:business-contact-email",
+            "Value": {
+              "Ref": "TAGbusinesscontactemail"
+            }
+          },
+          {
+            "Key": "itcommunity:business-contact-phone",
+            "Value": {
+              "Ref": "TAGbusinesscontactphone"
+            }
+          },
+          {
+            "Key": "itcommunity:zone",
             "Value": {"Ref": "TAGZoneA"}
           },
           {
-            "Key": "Region",
+            "Key": "itcommunity:region",
             "Value": {"Ref": "TAGRegion"}
           },
           {
-            "Key": "Tier",
-            "Value": "TAGLevel2"
+            "Key": "itcommunity:tier",
+            "Value": {"Ref": "TAGLevel2"}
+          },
+          {
+            "Key": "itcommunity:resource:type",
+            "Value": {"Ref": "TAGtechresourcetype"}
           }
         ]
       }
@@ -407,34 +778,96 @@
         },
         "Tags": [
           {
-            "Key": "StackName",
+            "Key": "itcommunity:name",
+            "Value": {"Fn::Join": ["",["subnet-",{"Ref": "TAGPrivateSubnetB"}]]}
+          },
+          {
+            "Key": "itcommunity:environment",
             "Value": {
-              "Ref": "AWS::StackName"
+              "Ref": "TAGEnvironment"
             }
           },
           {
-            "Key": "Network",
-            "Value": {"Ref": "TAGPrivateSubnetB"}
+            "Key": "itcommunity:technical-contact-name",
+            "Value": {
+              "Ref": "TAGtechcontactname"
+            }
           },
           {
-            "Key": "Name",
-            "Value": {"Ref": "TAGPrivateSubnetB"}
+            "Key": "itcommunity:technical-contact-email",
+            "Value": {
+              "Ref": "TAGtechcontactemail"
+            }
           },
           {
-            "Key": "Environment",
-            "Value": {"Ref": "TAGEnvironment"}
+            "Key": "itcommunity:technical-contact-phone",
+            "Value": {
+              "Ref": "TAGtechcontactphone"
+            }
           },
           {
-            "Key": "AZ",
+            "Key": "itcommunity:billing:costcenter",
+            "Value": {
+              "Ref": "TAGbillincostcenter"
+            }
+          },
+          {
+            "Key": "itcommunity:billing:bu",
+            "Value": {
+              "Ref": "TAGbillingBU"
+            }
+          },
+          {
+            "Key": "itcommunity:billing:region",
+            "Value": {
+              "Ref": "TAGbillingregion"
+            }
+          },
+          {
+            "Key": "itcommunity:billing:owner",
+            "Value": {
+              "Ref": "TAGbillingowner"
+            }
+          },
+          {
+            "Key": "itcommunity:billing:costcenter",
+            "Value": {
+              "Ref": "TAGbillincostcenter"
+            }
+          },
+          {
+            "Key": "itcommunity:business-contact-name",
+            "Value": {
+              "Ref": "TAGbusinesscontactname"
+            }
+          },
+          {
+            "Key": "itcommunity:business-contact-email",
+            "Value": {
+              "Ref": "TAGbusinesscontactemail"
+            }
+          },
+          {
+            "Key": "itcommunity:business-contact-phone",
+            "Value": {
+              "Ref": "TAGbusinesscontactphone"
+            }
+          },
+          {
+            "Key": "itcommunity:zone",
             "Value": {"Ref": "TAGZoneB"}
           },
           {
-            "Key": "Region",
+            "Key": "itcommunity:region",
             "Value": {"Ref": "TAGRegion"}
           },
           {
-            "Key": "Tier",
-            "Value": "TAGLevel2"
+            "Key": "itcommunity:tier",
+            "Value": {"Ref": "TAGLevel2"}
+          },
+          {
+            "Key": "itcommunity:resource:type",
+            "Value": {"Ref": "TAGtechresourcetype"}
           }
         ]
       }
@@ -455,34 +888,96 @@
         },
         "Tags": [
           {
-            "Key": "StackName",
+            "Key": "itcommunity:name",
+            "Value": {"Fn::Join": ["",["subnet-",{"Ref": "TAGPrivateSubnetB"}]]}
+          },
+          {
+            "Key": "itcommunity:environment",
             "Value": {
-              "Ref": "AWS::StackName"
+              "Ref": "TAGEnvironment"
             }
           },
           {
-            "Key": "Network",
-            "Value": {"Ref": "TAGPrivateSubnetC"}
+            "Key": "itcommunity:technical-contact-name",
+            "Value": {
+              "Ref": "TAGtechcontactname"
+            }
           },
           {
-            "Key": "Name",
-            "Value": {"Ref": "TAGPrivateSubnetC"}
+            "Key": "itcommunity:technical-contact-email",
+            "Value": {
+              "Ref": "TAGtechcontactemail"
+            }
           },
           {
-            "Key": "Environment",
-            "Value": {"Ref": "TAGEnvironment"}
+            "Key": "itcommunity:technical-contact-phone",
+            "Value": {
+              "Ref": "TAGtechcontactphone"
+            }
           },
           {
-            "Key": "AZ",
+            "Key": "itcommunity:billing:costcenter",
+            "Value": {
+              "Ref": "TAGbillincostcenter"
+            }
+          },
+          {
+            "Key": "itcommunity:billing:bu",
+            "Value": {
+              "Ref": "TAGbillingBU"
+            }
+          },
+          {
+            "Key": "itcommunity:billing:region",
+            "Value": {
+              "Ref": "TAGbillingregion"
+            }
+          },
+          {
+            "Key": "itcommunity:billing:owner",
+            "Value": {
+              "Ref": "TAGbillingowner"
+            }
+          },
+          {
+            "Key": "itcommunity:billing:costcenter",
+            "Value": {
+              "Ref": "TAGbillincostcenter"
+            }
+          },
+          {
+            "Key": "itcommunity:business-contact-name",
+            "Value": {
+              "Ref": "TAGbusinesscontactname"
+            }
+          },
+          {
+            "Key": "itcommunity:business-contact-email",
+            "Value": {
+              "Ref": "TAGbusinesscontactemail"
+            }
+          },
+          {
+            "Key": "itcommunity:business-contact-phone",
+            "Value": {
+              "Ref": "TAGbusinesscontactphone"
+            }
+          },
+          {
+            "Key": "itcommunity:zone",
             "Value": {"Ref": "TAGZoneC"}
           },
           {
-            "Key": "Region",
+            "Key": "itcommunity:region",
             "Value": {"Ref": "TAGRegion"}
           },
           {
-            "Key": "Tier",
-            "Value": "TAGLevel2"
+            "Key": "itcommunity:tier",
+            "Value": {"Ref": "TAGLevel2"}
+          },
+          {
+            "Key": "itcommunity:resource:type",
+            "Value": {"Ref": "TAGtechresourcetype"}
           }
         ]
       }
@@ -491,24 +986,88 @@
       "Type": "AWS::EC2::InternetGateway",
       "Properties": {
         "Tags": [
+
           {
-            "Key": "StackName",
+            "Key": "itcommunity:name",
+            "Value": {"Fn::Join": ["",["internet-gateway-",{"Ref": "TAGEnvironment"}]]}
+          },
+          {
+            "Key": "itcommunity:environment",
             "Value": {
-              "Ref": "AWS::StackName"
+              "Ref": "TAGEnvironment"
             }
           },
           {
-            "Key": "Network",
-            "Value": {"Ref": "TAGExternal"}
+            "Key": "itcommunity:technical-contact-name",
+            "Value": {
+              "Ref": "TAGtechcontactname"
+            }
           },
           {
-            "Key": "Environment",
-            "Value": {"Ref": "TAGEnvironment"}
+            "Key": "itcommunity:technical-contact-email",
+            "Value": {
+              "Ref": "TAGtechcontactemail"
+            }
           },
           {
-            "Key": "Name",
-            "Value": "TAGInternetGW"
+            "Key": "itcommunity:technical-contact-phone",
+            "Value": {
+              "Ref": "TAGtechcontactphone"
+            }
+          },
+          {
+            "Key": "itcommunity:billing:costcenter",
+            "Value": {
+              "Ref": "TAGbillincostcenter"
+            }
+          },
+          {
+            "Key": "itcommunity:billing:bu",
+            "Value": {
+              "Ref": "TAGbillingBU"
+            }
+          },
+          {
+            "Key": "itcommunity:billing:region",
+            "Value": {
+              "Ref": "TAGbillingregion"
+            }
+          },
+          {
+            "Key": "itcommunity:billing:owner",
+            "Value": {
+              "Ref": "TAGbillingowner"
+            }
+          },
+          {
+            "Key": "itcommunity:billing:costcenter",
+            "Value": {
+              "Ref": "TAGbillincostcenter"
+            }
+          },
+          {
+            "Key": "itcommunity:business-contact-name",
+            "Value": {
+              "Ref": "TAGbusinesscontactname"
+            }
+          },
+          {
+            "Key": "itcommunity:business-contact-email",
+            "Value": {
+              "Ref": "TAGbusinesscontactemail"
+            }
+          },
+          {
+            "Key": "itcommunity:business-contact-phone",
+            "Value": {
+              "Ref": "TAGbusinesscontactphone"
+            }
+          },
+          {
+            "Key": "itcommunity:tier",
+            "Value": {"Ref": "TAGLevel1"}
           }
+
         ]
       }
     },
@@ -530,23 +1089,86 @@
           "Ref": "ComponentVPC"
         },
         "Tags": [
+
           {
-            "Key": "StackName",
+            "Key": "itcommunity:name",
+            "Value": {"Fn::Join": ["",["public-route-table",{"Ref": "TAGEnvironment"}]]}
+          },
+          {
+            "Key": "itcommunity:environment",
             "Value": {
-              "Ref": "AWS::StackName"
+              "Ref": "TAGEnvironment"
             }
           },
           {
-            "Key": "Network",
-            "Value": {"Ref": "TAGExternal"}
+            "Key": "itcommunity:technical-contact-name",
+            "Value": {
+              "Ref": "TAGtechcontactname"
+            }
           },
           {
-            "Key": "Name",
-            "Value": {"Ref": "TAGPublicRouteTable"}
+            "Key": "itcommunity:technical-contact-email",
+            "Value": {
+              "Ref": "TAGtechcontactemail"
+            }
           },
           {
-            "Key": "Environment",
-            "Value": {"Ref": "TAGEnvironment"}
+            "Key": "itcommunity:technical-contact-phone",
+            "Value": {
+              "Ref": "TAGtechcontactphone"
+            }
+          },
+          {
+            "Key": "itcommunity:billing:costcenter",
+            "Value": {
+              "Ref": "TAGbillincostcenter"
+            }
+          },
+          {
+            "Key": "itcommunity:billing:bu",
+            "Value": {
+              "Ref": "TAGbillingBU"
+            }
+          },
+          {
+            "Key": "itcommunity:billing:region",
+            "Value": {
+              "Ref": "TAGbillingregion"
+            }
+          },
+          {
+            "Key": "itcommunity:billing:owner",
+            "Value": {
+              "Ref": "TAGbillingowner"
+            }
+          },
+          {
+            "Key": "itcommunity:billing:costcenter",
+            "Value": {
+              "Ref": "TAGbillincostcenter"
+            }
+          },
+          {
+            "Key": "itcommunity:business-contact-name",
+            "Value": {
+              "Ref": "TAGbusinesscontactname"
+            }
+          },
+          {
+            "Key": "itcommunity:business-contact-email",
+            "Value": {
+              "Ref": "TAGbusinesscontactemail"
+            }
+          },
+          {
+            "Key": "itcommunity:business-contact-phone",
+            "Value": {
+              "Ref": "TAGbusinesscontactphone"
+            }
+          },
+          {
+            "Key": "itcommunity:tier",
+            "Value": {"Ref": "TAGLevel1"}
           }
         ]
       }
@@ -605,23 +1227,86 @@
           "Ref": "ComponentVPC"
         },
         "Tags": [
+
           {
-            "Key": "StackName",
+            "Key": "itcommunity:name",
+            "Value": {"Fn::Join": ["",["public-nacl",{"Ref": "TAGEnvironment"}]]}
+          },
+          {
+            "Key": "itcommunity:environment",
             "Value": {
-              "Ref": "AWS::StackName"
+              "Ref": "TAGEnvironment"
             }
           },
           {
-            "Key": "Network",
-            "Value": {"Ref": "TAGExternal"}
+            "Key": "itcommunity:technical-contact-name",
+            "Value": {
+              "Ref": "TAGtechcontactname"
+            }
           },
           {
-            "Key": "Name",
-            "Value": {"Ref": "TAGPublicNetworkACL"}
+            "Key": "itcommunity:technical-contact-email",
+            "Value": {
+              "Ref": "TAGtechcontactemail"
+            }
           },
           {
-            "Key": "Environment",
-            "Value": {"Ref": "TAGEnvironment"}
+            "Key": "itcommunity:technical-contact-phone",
+            "Value": {
+              "Ref": "TAGtechcontactphone"
+            }
+          },
+          {
+            "Key": "itcommunity:billing:costcenter",
+            "Value": {
+              "Ref": "TAGbillincostcenter"
+            }
+          },
+          {
+            "Key": "itcommunity:billing:bu",
+            "Value": {
+              "Ref": "TAGbillingBU"
+            }
+          },
+          {
+            "Key": "itcommunity:billing:region",
+            "Value": {
+              "Ref": "TAGbillingregion"
+            }
+          },
+          {
+            "Key": "itcommunity:billing:owner",
+            "Value": {
+              "Ref": "TAGbillingowner"
+            }
+          },
+          {
+            "Key": "itcommunity:billing:costcenter",
+            "Value": {
+              "Ref": "TAGbillincostcenter"
+            }
+          },
+          {
+            "Key": "itcommunity:business-contact-name",
+            "Value": {
+              "Ref": "TAGbusinesscontactname"
+            }
+          },
+          {
+            "Key": "itcommunity:business-contact-email",
+            "Value": {
+              "Ref": "TAGbusinesscontactemail"
+            }
+          },
+          {
+            "Key": "itcommunity:business-contact-phone",
+            "Value": {
+              "Ref": "TAGbusinesscontactphone"
+            }
+          },
+          {
+            "Key": "itcommunity:tier",
+            "Value": {"Ref": "TAGLevel1"}
           }
         ]
       }
@@ -696,16 +1381,7 @@
     "ComponentNATGatewaySubnetA": {
       "Type": "AWS::EC2::NatGateway",
       "Properties": {
-        "Tags" : [
-          {
-            "Key": "Name",
-            "Value": {"Ref": "TAGNATGateway"}
-          },
-          {
-            "Key": "Environment",
-            "Value": {"Ref": "TAGEnvironment"}
-          }
-        ],
+
         "AllocationId": {
           "Fn::GetAtt": [
             "ComponentElasticIPSubnetA",
@@ -714,7 +1390,89 @@
         },
         "SubnetId": {
           "Ref": "ComponentSubnetPublicA"
-        }
+        },
+        "Tags" : [
+          {
+            "Key": "itcommunity:name",
+            "Value": {"Fn::Join": ["",["nat-gateway",{"Ref": "TAGEnvironment"}]]}
+          },
+          {
+            "Key": "itcommunity:environment",
+            "Value": {
+              "Ref": "TAGEnvironment"
+            }
+          },
+          {
+            "Key": "itcommunity:technical-contact-name",
+            "Value": {
+              "Ref": "TAGtechcontactname"
+            }
+          },
+          {
+            "Key": "itcommunity:technical-contact-email",
+            "Value": {
+              "Ref": "TAGtechcontactemail"
+            }
+          },
+          {
+            "Key": "itcommunity:technical-contact-phone",
+            "Value": {
+              "Ref": "TAGtechcontactphone"
+            }
+          },
+          {
+            "Key": "itcommunity:billing:costcenter",
+            "Value": {
+              "Ref": "TAGbillincostcenter"
+            }
+          },
+          {
+            "Key": "itcommunity:billing:bu",
+            "Value": {
+              "Ref": "TAGbillingBU"
+            }
+          },
+          {
+            "Key": "itcommunity:billing:region",
+            "Value": {
+              "Ref": "TAGbillingregion"
+            }
+          },
+          {
+            "Key": "itcommunity:billing:owner",
+            "Value": {
+              "Ref": "TAGbillingowner"
+            }
+          },
+          {
+            "Key": "itcommunity:billing:costcenter",
+            "Value": {
+              "Ref": "TAGbillincostcenter"
+            }
+          },
+          {
+            "Key": "itcommunity:business-contact-name",
+            "Value": {
+              "Ref": "TAGbusinesscontactname"
+            }
+          },
+          {
+            "Key": "itcommunity:business-contact-email",
+            "Value": {
+              "Ref": "TAGbusinesscontactemail"
+            }
+          },
+          {
+            "Key": "itcommunity:business-contact-phone",
+            "Value": {
+              "Ref": "TAGbusinesscontactphone"
+            }
+          },
+          {
+            "Key": "itcommunity:tier",
+            "Value": {"Ref": "TAGLevel1"}
+          }
+        ]
       }
     },
     "ComponentElasticIPSubnetA": {
@@ -731,12 +1489,84 @@
         },
         "Tags": [
           {
-            "Key": "Name",
-            "Value": {"Ref": "TAGPrivateRouteTable"}
+            "Key": "itcommunity:name",
+            "Value": {"Fn::Join": ["",["private-route-table",{"Ref": "TAGEnvironment"}]]}
           },
           {
-            "Key": "Environment",
-            "Value": {"Ref": "TAGEnvironment"}
+            "Key": "itcommunity:environment",
+            "Value": {
+              "Ref": "TAGEnvironment"
+            }
+          },
+          {
+            "Key": "itcommunity:technical-contact-name",
+            "Value": {
+              "Ref": "TAGtechcontactname"
+            }
+          },
+          {
+            "Key": "itcommunity:technical-contact-email",
+            "Value": {
+              "Ref": "TAGtechcontactemail"
+            }
+          },
+          {
+            "Key": "itcommunity:technical-contact-phone",
+            "Value": {
+              "Ref": "TAGtechcontactphone"
+            }
+          },
+          {
+            "Key": "itcommunity:billing:costcenter",
+            "Value": {
+              "Ref": "TAGbillincostcenter"
+            }
+          },
+          {
+            "Key": "itcommunity:billing:bu",
+            "Value": {
+              "Ref": "TAGbillingBU"
+            }
+          },
+          {
+            "Key": "itcommunity:billing:region",
+            "Value": {
+              "Ref": "TAGbillingregion"
+            }
+          },
+          {
+            "Key": "itcommunity:billing:owner",
+            "Value": {
+              "Ref": "TAGbillingowner"
+            }
+          },
+          {
+            "Key": "itcommunity:billing:costcenter",
+            "Value": {
+              "Ref": "TAGbillincostcenter"
+            }
+          },
+          {
+            "Key": "itcommunity:business-contact-name",
+            "Value": {
+              "Ref": "TAGbusinesscontactname"
+            }
+          },
+          {
+            "Key": "itcommunity:business-contact-email",
+            "Value": {
+              "Ref": "TAGbusinesscontactemail"
+            }
+          },
+          {
+            "Key": "itcommunity:business-contact-phone",
+            "Value": {
+              "Ref": "TAGbusinesscontactphone"
+            }
+          },
+          {
+            "Key": "itcommunity:tier",
+            "Value": {"Ref": "TAGLevel1"}
           }
         ]
       }
