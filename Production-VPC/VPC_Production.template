@@ -99,13 +99,13 @@
     "TAGtechcontactname": {
       "Description": "Technical TAGS - Technical contact name",
       "Type": "String",
-      "Default": "Alexandru Raul"
+      "Default": "John Doe"
 
     },
     "TAGtechcontactemail": {
       "Description": "Technical TAGS - Technical contact email",
       "Type": "String",
-      "Default": "alexandru.raul@gmail.com"
+      "Default": "hatz@gmail.com"
 
     },
     "TAGtechcontactphone": {
@@ -125,8 +125,8 @@
       "Type": "String",
       "AllowedValues": [
         "Itcommunity Platform"
-
-      ]
+      ],
+      "Default": "Itcommunity Platform"
 
 
     },
@@ -138,14 +138,15 @@
         "us",
         "apac"
 
-      ]
+      ],
+      "Default": "us"
 
 
     },
     "TAGbillingowner": {
       "Description": "Business TAG - Billing owner",
       "Type": "String",
-      "Default": "Alexandru Raul"
+      "Default": "John Doe"
 
 
     },
@@ -159,13 +160,13 @@
     "TAGbusinesscontactname": {
       "Description": "Business TAGS - Business contact name",
       "Type": "String",
-      "Default": "Alexandru Raul"
+      "Default": "John Doe"
 
     },
     "TAGbusinesscontactemail": {
       "Description": "Business TAGS - Business contact email",
       "Type": "String",
-      "Default": "alexandru.raul@gmail.com"
+      "Default": "hatz@gmail.com"
 
     },
     "TAGbusinesscontactphone": {
@@ -182,9 +183,8 @@
         "ireland",
         "us",
         "canada"
-
-
-      ]
+      ],
+      "Default": "us"
     }
   },
   "Mappings": {
