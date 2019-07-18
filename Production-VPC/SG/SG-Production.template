@@ -405,7 +405,7 @@
         ]
       },
 
-      "Export": { "Name": {"Fn::Sub": "Export::${TAgEnvironment}-SG-SSH-EC2"}}
+      "Export": { "Name": {"Fn::Sub": "Export::${TAGEnvironment}-SG-SSH-EC2"}}
 
     }
   }
